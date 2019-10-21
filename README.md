@@ -40,6 +40,16 @@ $ python main.py --mode train --dataset CelebA --image_size 128 --c_dim 5 \
                  --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
 ```
 
+### 3. Testing
+```bash
+$ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
+                 --sample_dir celeba/samples \
+                 --log_dir celeba/logs \
+                 --model_save_dir celeba/models \
+                 --result_dir celeba/results \
+                 --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
+```
+
 ## Citation
 ```
 @InProceedings{FixedPointGAN2019,
