@@ -61,7 +61,7 @@ $ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
 ```
 @inproceedings{siddiquee2019learning,
   title={Learning Fixed Points in Generative Adversarial Networks: From Image-to-Image Translation to Disease Detection and Localization},
-  author={Siddiquee, Md Mahfuzur Rahman and Zhou, Zongwei and Tajbakhsh, Nima and Feng, Ruibin and Gotway, Michael B and Bengio, Yoshua and Liang, Jianming},
+  author={Rahman Siddiquee, Md Mahfuzur and Zhou, Zongwei and Tajbakhsh, Nima and Feng, Ruibin and Gotway, Michael B and Bengio, Yoshua and Liang, Jianming},
   booktitle={Proceedings of the IEEE International Conference on Computer Vision},
   pages={191--200},
   year={2019}
