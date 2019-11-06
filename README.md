@@ -24,7 +24,7 @@ $ git clone https://github.com/mahfuzmohammad/Fixed-Point-GAN.git
 $ cd Fixed-Point-GAN/
 ```
 
-### 1. Create python environment
+### 1. Creating python environment
 ```bash
 $ conda env create -f conda_env/conda_env_pytorch0.2.yml
 $ source activate pytorch0.2
