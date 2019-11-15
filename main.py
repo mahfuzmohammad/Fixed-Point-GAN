@@ -23,22 +23,29 @@ def main(config):
         os.makedirs(config.result_dir)
 
     # Data loader.
-    celeba_loader = None
+    data_loader = None
 
     if config.dataset in ['CelebA']:
-        celeba_loader = get_loader(config.celeba_image_dir, config.attr_path, config.selected_attrs,
-                                   config.celeba_crop_size, config.image_size, config.batch_size,
+        data_loader = get_loader(config.image_dir, config.attr_path, config.selected_attrs,
+                                   config.crop_size, config.image_size, config.batch_size,
                                    'CelebA', config.mode, config.num_workers)
+
+
+    elif config.dataset in ['Directory']:
+        data_loader = get_loader(config.image_dir, None, None,
+                                 config.crop_size, config.image_size, config.batch_size,
+                                 'Directory', config.mode, config.num_workers)
+
+        
+    # Solver for training and testing Fixed-Point GAN.
+    solver = Solver(data_loader, config)
     
 
-    # Solver for training and testing Fixed-Point GAN.
-    solver = Solver(celeba_loader, config)
-
     if config.mode == 'train':
-        if config.dataset in ['CelebA']:
+        if config.dataset in ['CelebA', 'Directory']:
             solver.train()
     elif config.mode == 'test':
-        if config.dataset in ['CelebA']:
+        if config.dataset in ['CelebA', 'Directory']:
             solver.test()
 
 
@@ -48,7 +55,7 @@ if __name__ == '__main__':
     # Model configuration.
     parser.add_argument('--c_dim', type=int, default=5, help='dimension of domain labels (1st dataset)')
     parser.add_argument('--c2_dim', type=int, default=8, help='dimension of domain labels (2nd dataset)')
-    parser.add_argument('--celeba_crop_size', type=int, default=178, help='crop size for the CelebA dataset')
+    parser.add_argument('--crop_size', type=int, default=178, help='crop size for the images')
     parser.add_argument('--image_size', type=int, default=128, help='image resolution')
     parser.add_argument('--g_conv_dim', type=int, default=64, help='number of conv filters in the first layer of G')
     parser.add_argument('--d_conv_dim', type=int, default=64, help='number of conv filters in the first layer of D')
@@ -82,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument('--use_tensorboard', type=str2bool, default=True)
 
     # Directories.
-    parser.add_argument('--celeba_image_dir', type=str, default='data/celeba/images')
+    parser.add_argument('--image_dir', type=str, default='data/celeba/images')
     parser.add_argument('--attr_path', type=str, default='data/celeba/list_attr_celeba.txt')
     parser.add_argument('--log_dir', type=str, default='celeba/logs')
     parser.add_argument('--model_save_dir', type=str, default='celeba/models')

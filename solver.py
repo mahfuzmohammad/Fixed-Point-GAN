@@ -13,11 +13,11 @@ import datetime
 class Solver(object):
     """Solver for training and testing StarGAN."""
 
-    def __init__(self, celeba_loader, config):
+    def __init__(self, data_loader, config):
         """Initialize configurations."""
 
         # Data loader.
-        self.celeba_loader = celeba_loader
+        self.data_loader = data_loader
 
         # Model configurations.
         self.c_dim = config.c_dim
@@ -146,7 +146,7 @@ class Solver(object):
     def create_labels(self, c_org, c_dim=5, dataset='CelebA', selected_attrs=None):
         """Generate target domain labels for debugging and testing."""
         # Get hair color indices.
-        if dataset == 'CelebA':
+        if dataset in ['CelebA', 'Directory']:
             hair_color_indices = []
             for i, attr_name in enumerate(selected_attrs):
                 if attr_name in ['Black_Hair', 'Blond_Hair', 'Brown_Hair', 'Gray_Hair']:
@@ -154,7 +154,7 @@ class Solver(object):
 
         c_trg_list = []
         for i in range(c_dim):
-            if dataset == 'CelebA':
+            if dataset in ['CelebA', 'Directory']:
                 c_trg = c_org.clone()
                 if i in hair_color_indices:  # Set one hair color to 1 and the rest to 0.
                     c_trg[:, i] = 1
@@ -169,14 +169,14 @@ class Solver(object):
 
     def classification_loss(self, logit, target, dataset='CelebA'):
         """Compute binary or softmax cross entropy loss."""
-        if dataset == 'CelebA':
+        if dataset in ['CelebA', 'Directory']:
             return F.binary_cross_entropy_with_logits(logit, target, size_average=False) / logit.size(0)
 
     def train(self):
         """Train StarGAN within a single dataset."""
         # Set data loader.
-        if self.dataset == 'CelebA':
-            data_loader = self.celeba_loader
+        if self.dataset in ['CelebA', 'Directory']:
+            data_loader = self.data_loader
 
         # Fetch fixed inputs for debugging.
         data_iter = iter(data_loader)
@@ -214,7 +214,7 @@ class Solver(object):
             rand_idx = torch.randperm(label_org.size(0))
             label_trg = label_org[rand_idx]
 
-            if self.dataset == 'CelebA':
+            if self.dataset in ['CelebA', 'Directory']:
                 c_org = label_org.clone()
                 c_trg = label_trg.clone()
 
@@ -356,8 +356,8 @@ class Solver(object):
         self.restore_model(self.test_iters)
         
         # Set data loader.
-        if self.dataset == 'CelebA':
-            data_loader = self.celeba_loader
+        if self.dataset in ['CelebA', 'Directory']:
+            data_loader = self.data_loader
         
         with torch.no_grad():
             for i, (x_real, c_org) in enumerate(data_loader):

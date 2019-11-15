@@ -82,7 +82,7 @@ def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=1
 
     if dataset == 'CelebA':
         dataset = CelebA(image_dir, attr_path, selected_attrs, transform, mode)
-    elif dataset == 'RaFD':
+    elif dataset == 'Directory':
         dataset = ImageFolder(image_dir, transform)
 
     data_loader = data.DataLoader(dataset=dataset,
