@@ -154,7 +154,7 @@ class Solver(object):
 
         c_trg_list = []
         for i in range(c_dim):
-            if dataset in ['CelebA', 'Directory']:
+            if dataset in ['CelebA']:
                 c_trg = c_org.clone()
                 if i in hair_color_indices:  # Set one hair color to 1 and the rest to 0.
                     c_trg[:, i] = 1
@@ -163,14 +163,18 @@ class Solver(object):
                             c_trg[:, j] = 0
                 else:
                     c_trg[:, i] = (c_trg[:, i] == 0)  # Reverse attribute value.
+            elif dataset == 'Directory':
+                c_trg = self.label2onehot(torch.ones(c_org.size(0))*i, c_dim)
 
             c_trg_list.append(c_trg.to(self.device))
         return c_trg_list
 
     def classification_loss(self, logit, target, dataset='CelebA'):
         """Compute binary or softmax cross entropy loss."""
-        if dataset in ['CelebA', 'Directory']:
+        if dataset in ['CelebA']:
             return F.binary_cross_entropy_with_logits(logit, target, size_average=False) / logit.size(0)
+        elif dataset == 'Directory':
+            return F.cross_entropy(logit, target)
 
     def train(self):
         """Train StarGAN within a single dataset."""
@@ -214,9 +218,12 @@ class Solver(object):
             rand_idx = torch.randperm(label_org.size(0))
             label_trg = label_org[rand_idx]
 
-            if self.dataset in ['CelebA', 'Directory']:
+            if self.dataset in ['CelebA']:
                 c_org = label_org.clone()
                 c_trg = label_trg.clone()
+            elif self.dataset == 'Directory':
+                c_org = self.label2onehot(label_org, self.c_dim)
+                c_trg = self.label2onehot(label_trg, self.c_dim)
 
             x_real = x_real.to(self.device)           # Input images.
             c_org = c_org.to(self.device)             # Original domain labels.
