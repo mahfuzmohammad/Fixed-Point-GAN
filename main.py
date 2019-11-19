@@ -31,6 +31,12 @@ def main(config):
                                    'CelebA', config.mode, config.num_workers)
 
 
+    elif config.dataset in ['BRATS']:
+        data_loader = get_loader(config.image_dir, None, None,
+                                   config.crop_size, config.image_size, config.batch_size,
+                                   'BRATS', config.mode, config.num_workers)
+
+
     elif config.dataset in ['Directory']:
         data_loader = get_loader(config.image_dir, None, None,
                                  config.crop_size, config.image_size, config.batch_size,
@@ -42,11 +48,14 @@ def main(config):
     
 
     if config.mode == 'train':
-        if config.dataset in ['CelebA', 'Directory']:
+        if config.dataset in ['CelebA', 'BRATS', 'Directory']:
             solver.train()
     elif config.mode == 'test':
         if config.dataset in ['CelebA', 'Directory']:
             solver.test()
+    elif config.mode == 'test_brats':
+        if config.dataset in ['BRATS']:
+            solver.test_brats()
 
 
 if __name__ == '__main__':
@@ -67,7 +76,7 @@ if __name__ == '__main__':
     parser.add_argument('--lambda_id', type=float, default=10, help='weight for identity loss')
     
     # Training configuration.
-    parser.add_argument('--dataset', type=str, default='CelebA', choices=['CelebA'])
+    parser.add_argument('--dataset', type=str, default='CelebA', choices=['CelebA', 'BRATS', 'Directory'])
     parser.add_argument('--batch_size', type=int, default=16, help='mini-batch size')
     parser.add_argument('--num_iters', type=int, default=200000, help='number of total iterations for training D')
     parser.add_argument('--num_iters_decay', type=int, default=100000, help='number of iterations for decaying lr')
@@ -85,7 +94,7 @@ if __name__ == '__main__':
 
     # Miscellaneous.
     parser.add_argument('--num_workers', type=int, default=1)
-    parser.add_argument('--mode', type=str, default='train', choices=['train', 'test'])
+    parser.add_argument('--mode', type=str, default='train', choices=['train', 'test', 'test_brats'])
     parser.add_argument('--use_tensorboard', type=str2bool, default=True)
 
     # Directories.

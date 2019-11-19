@@ -5,6 +5,7 @@ from PIL import Image
 import torch
 import os
 import random
+from glob import glob
 
 
 class CelebA(data.Dataset):
@@ -68,6 +69,61 @@ class CelebA(data.Dataset):
         return self.num_images
 
 
+class BRATS_SYN(data.Dataset):
+    """Dataset class for the BRATS dataset."""
+
+    def __init__(self, image_dir, transform, mode):
+        """Initialize and Load the BRATS dataset."""
+        self.image_dir = image_dir
+        self.transform = transform
+        self.mode = mode
+        self.train_dataset = []
+        self.test_dataset = []
+        self.load_data()
+
+        if mode == 'train':
+            self.num_images = len(self.train_dataset)
+        else:
+            self.num_images = len(self.test_dataset)
+
+    def load_data(self):
+        """Load BRATS dataset"""
+        
+        # Load test dataset
+        test_neg = glob(os.path.join(self.image_dir, 'test', 'negative', '*jpg'))
+        test_pos = glob(os.path.join(self.image_dir, 'test', 'positive', '*jpg'))
+
+        for filename in test_neg:
+            self.test_dataset.append([filename, [0]])
+
+        for filename in test_pos:
+            self.test_dataset.append([filename, [1]])
+
+
+        # Load train dataset
+        train_neg = glob(os.path.join(self.image_dir, 'train', 'negative', '*jpg'))
+        train_pos = glob(os.path.join(self.image_dir, 'train', 'positive', '*jpg'))
+
+        for filename in train_neg:
+            self.train_dataset.append([filename, [0]])
+
+        for filename in train_pos:
+            self.train_dataset.append([filename, [1]])
+
+        print('Finished loading the BRATS dataset...')
+
+    def __getitem__(self, index):
+        """Return one image and its corresponding attribute label."""
+        dataset = self.train_dataset if self.mode == 'train' else self.test_dataset
+        filename, label = dataset[index]
+        image = Image.open(filename)
+        return self.transform(image), torch.FloatTensor(label)
+
+    def __len__(self):
+        """Return the number of images."""
+        return self.num_images
+
+
 def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=128, 
                batch_size=16, dataset='CelebA', mode='train', num_workers=1):
     """Build and return a data loader."""
@@ -82,6 +138,8 @@ def get_loader(image_dir, attr_path, selected_attrs, crop_size=178, image_size=1
 
     if dataset == 'CelebA':
         dataset = CelebA(image_dir, attr_path, selected_attrs, transform, mode)
+    elif dataset == 'BRATS':
+        dataset = BRATS_SYN(image_dir, transform, mode)
     elif dataset == 'Directory':
         dataset = ImageFolder(image_dir, transform)
 

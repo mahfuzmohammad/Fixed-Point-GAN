@@ -19,12 +19,14 @@ Generative adversarial networks (GANs) have ushered in a revolution in image-to-
 ## Usage
 
 ### 0. Cloning the repository
+
 ```bash
 $ git clone https://github.com/mahfuzmohammad/Fixed-Point-GAN.git
 $ cd Fixed-Point-GAN/
 ```
 
 ### 1. Creating python environment
+
 ```bash
 $ conda env create -f conda_env/conda_env_pytorch0.2.yml
 $ source activate pytorch0.2
@@ -32,12 +34,23 @@ $ cat conda_env/pip_pytorch0.2.txt | xargs -n 1 pip install
 ```
 
 ### 2. Downloading the dataset
+
 To download the CelebA dataset:
+
 ```bash
 $ bash download.sh celeba
 ```
 
+To download the processed BRATS 2013 synthetic dataset:
+
+```bash
+$ bash download.sh brats
+```
+
 ### 3. Training
+
+Training on CelebA dataset
+
 ```bash
 $ python main.py --mode train --dataset CelebA --image_size 128 --c_dim 5 \
                  --sample_dir celeba/samples \
@@ -47,7 +60,22 @@ $ python main.py --mode train --dataset CelebA --image_size 128 --c_dim 5 \
                  --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
 ```
 
-### 3. Testing
+Training on BRATS dataset
+
+```bash
+$ python main.py --mode train --dataset BRATS --crop_size 256 --image_size 256 --c_dim 1 \
+                 --image_dir data/brats/syn \
+                 --sample_dir brats_syn_256_lambda0.1/samples \
+                 --log_dir brats_syn_256_lambda0.1/logs \
+                 --model_save_dir brats_syn_256_lambda0.1/models \
+                 --result_dir brats_syn_256_lambda0.1/results \
+                 --batch_size 8 --num_workers 4 --lambda_id 0.1 --num_iters 10000
+```
+
+### 4. Testing
+
+Testing on CelebA dataset
+
 ```bash
 $ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
                  --sample_dir celeba/samples \
@@ -57,7 +85,48 @@ $ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
                  --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
 ```
 
+Testing on BRATS dataset
+
+```bash
+$ python main.py --mode test_brats --dataset BRATS --crop_size 256 --image_size 256 --c_dim 1 \
+                 --image_dir data/brats/syn \
+                 --sample_dir brats_syn_256_lambda0.1/samples \
+                 --log_dir brats_syn_256_lambda0.1/logs \
+                 --model_save_dir brats_syn_256_lambda0.1/models \
+                 --result_dir brats_syn_256_lambda0.1/results \
+                 --batch_size 16 --num_workers 4 --lambda_id 0.1 --test_iters 300000
+```
+
+### 5. Testing pretrained models
+
+Testing pretrained models on CelebA dataset
+
+```bash
+$ bash download.sh pretrained_celeba_128
+$ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
+                 --sample_dir celeba/samples \
+                 --log_dir celeba/logs \
+                 --model_save_dir pretrained_models/celeba \
+                 --result_dir celeba/results \
+                 --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
+```
+
+Testing pretrained models on BRATS dataset
+
+```bash
+$ bash download.sh pretrained_brats_256
+$ python main.py --mode test_brats --dataset BRATS --crop_size 256 --image_size 256 --c_dim 1 \
+                 --image_dir data/brats/syn --sample_dir brats_syn_256_lambda0.1/samples \
+                 --log_dir brats_syn_256_lambda0.1/logs \
+                 --model_save_dir pretrained_models/brats_syn_256_lambda0.1 \
+                 --result_dir brats_syn_256_lambda0.1/results \
+                 --batch_size 16 --num_workers 4 --lambda_id 0.1 --test_iters 300000
+```
+
 ## Citation
+
+Please cite this work as following:
+
 ```
 @inproceedings{siddiquee2019learning,
   title={Learning Fixed Points in Generative Adversarial Networks: From Image-to-Image Translation to Disease Detection and Localization},
