@@ -121,6 +121,7 @@ $ python main.py --mode test_brats --dataset BRATS --crop_size 256 --image_size 
                  --model_save_dir pretrained_models/brats_syn_256_lambda0.1 \
                  --result_dir brats_syn_256_lambda0.1/results \
                  --batch_size 16 --num_workers 4 --lambda_id 0.1 --test_iters 300000
+$ python brats_auc.py
 ```
 
 ## Citation
