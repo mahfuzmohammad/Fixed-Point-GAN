@@ -97,9 +97,9 @@ $ python main.py --mode test_brats --dataset BRATS --crop_size 256 --image_size 
                  --batch_size 16 --num_workers 4 --lambda_id 0.1 --test_iters 300000
 ```
 
-### 5. Testing pretrained models
+### 5. Testing using pretrained models
 
-Testing pretrained models on CelebA dataset
+Testing on CelebA dataset using pretrained models
 
 ```bash
 $ bash download.sh pretrained_celeba_128
@@ -111,7 +111,7 @@ $ python main.py --mode test --dataset CelebA --image_size 128 --c_dim 5 \
                  --selected_attrs Black_Hair Blond_Hair Brown_Hair Male Young --lambda_id 10
 ```
 
-Testing pretrained models on BRATS dataset
+Testing on BRATS dataset using pretrained models
 
 ```bash
 $ bash download.sh pretrained_brats_256
