@@ -79,5 +79,5 @@ dependencies:
 - magma-cuda80=2.3.0=1
 - pytorch=0.2.0=py27ha262b23_4cu75
 - torchvision=0.1.9=py27hdb88a65_1
+- scikit-learn=0.20.3=py27hd81dba3_0
 prefix: /home/mahfuz/miniconda3/envs/pytorch0.2
-
