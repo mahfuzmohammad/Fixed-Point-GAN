@@ -7,8 +7,8 @@ This repository provides the official PyTorch implementation of Fixed-Point GAN.
 ## Paper
 [**Learning Fixed Points in Generative Adversarial Networks:<br/>From Image-to-Image Translation to Disease Detection and Localization**](https://arxiv.org/abs/1908.06965)
 
-[Md Mahfuzur Rahman Siddiquee](https://github.com/mahfuzmohammad)<sup>1</sup>, [Zongwei Zhou](https://github.com/MrGiovanni)<sup>1,3</sup>, Nima Tajbakhsh<sup>1</sup>, Ruibin Feng<sup>1</sup>,<br/>
-Michael B. Gotway<sup>2</sup>, Yoshua Bengio<sup>3</sup>, Jianming Liang<sup>1,3</sup><br/>
+[Md Mahfuzur Rahman Siddiquee](https://github.com/mahfuzmohammad)<sup>1</sup>, [Zongwei Zhou](https://github.com/MrGiovanni)<sup>1,3</sup>, [Nima Tajbakhsh](https://www.linkedin.com/in/nima-tajbakhsh-b5454376/)<sup>1</sup>, [Ruibin Feng](https://chs.asu.edu/ruibin-feng)<sup>1</sup>,<br/>
+[Michael B. Gotway](https://www.mayoclinic.org/biographies/gotway-michael-b-m-d/bio-20055566)<sup>2</sup>, [Yoshua Bengio](https://mila.quebec/en/yoshua-bengio/)<sup>3</sup>, [Jianming Liang](https://chs.asu.edu/jianming-liang)<sup>1,3</sup><br/>
 
 <sup>1</sup>Arizona State University; <sup>2</sup>Mayo Clinic; <sup>3</sup>Mila – Quebec Artificial Intelligence Institute<br/>
 International Conference on Computer Vision ([ICCV](http://iccv2019.thecvf.com)), 2019
