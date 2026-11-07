@@ -109,8 +109,8 @@ class Solver(object):
         print('Loading the trained models from step {}...'.format(resume_iters))
         G_path = os.path.join(self.model_save_dir, '{}-G.ckpt'.format(resume_iters))
         D_path = os.path.join(self.model_save_dir, '{}-D.ckpt'.format(resume_iters))
-        self.G.load_state_dict(torch.load(G_path, map_location=lambda storage, loc: storage))
-        self.D.load_state_dict(torch.load(D_path, map_location=lambda storage, loc: storage))
+        self.G.load_state_dict(torch.load(G_path, map_location=lambda storage, loc: storage, weights_only=True))
+        self.D.load_state_dict(torch.load(D_path, map_location=lambda storage, loc: storage, weights_only=True))
 
     def build_tensorboard(self):
         """Build a tensorboard logger."""
